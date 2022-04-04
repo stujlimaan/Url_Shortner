@@ -1,0 +1,31 @@
+{
+  "name": "Url_Shortner",
+  "version": "1.0.0",
+  "description": "For example, if we shorten the following URL through TinyURL:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stujlimaan/Url_Shortner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stujlimaan/Url_Shortner/issues"
+  },
+  "homepage": "https://github.com/stujlimaan/Url_Shortner#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "config": "^3.3.7",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15",
+    "shortid": "^2.2.16",
+    "valid-url": "^1.0.9"
+  }
+}
