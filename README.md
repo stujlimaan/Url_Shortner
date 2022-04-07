@@ -33,7 +33,7 @@ Some of the use cases for URL shortening is to optimise links shared across user
 - Return the shortened unique url. Refer this for the response
 Ensure the same response is returned for an original url everytime
 - Return HTTP status 400 for an invalid request
-GET /:urlCode
+## GET /:urlCode
 - Redirect to the original URL corresponding
 Use a valid HTTP status code meant for a redirection scenario.
 - Return a suitable error for a url not found
