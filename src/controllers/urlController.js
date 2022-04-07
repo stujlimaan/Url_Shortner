@@ -101,13 +101,7 @@ const getShortUrl= async (req,res)=>{
         //start caching storage
          let cahcedProfileData = await GET_ASYNC(shortCode)
          let parseLongUrl=JSON.parse(cahcedProfileData)
-//   if(cahcedProfileData) {
-//     res.send(cahcedProfileData)
-//   } else {
-//     let profile = await UrlModel.findOne({urlCode:req.params.urlCode});
-//     await SET_ASYNC(`${req.params.urlCode}`, JSON.stringify(profile))
-//     res.send({ data: profile });
-//   }
+
 
         if(parseLongUrl){
             return res.status(302).redirect(parse.longUrl)
