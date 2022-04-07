@@ -39,7 +39,7 @@ const shortUrlFun=async (req,res)=>{
         const data=req.body
         const baseUrl = req.headers.host
         if(!validUrl.isUri(baseUrl)){
-            return res.status(401).send("internal error")
+            return res.status(401).send("invalid baseurl")
         }
         console.log(baseUrl)
         if(!validator.isRequestBody(data)){
@@ -49,8 +49,13 @@ const shortUrlFun=async (req,res)=>{
         if(!longUrl){
             return res.status(400).send({status:false,message:"please provide long url in body"})
         }
+
+        if(!validUrl.isUri(longUrl.trim())){
+            return res.status(400).send({status:false,message:"please valid long url"})
+        }
+
         //checking whether longurl already exists or not
-        const uniqueShortUrl=await UrlModel.findOne({longUrl:longUrl}).select({createdAt:0,updatedAt:0,_v:0});
+        const uniqueShortUrl=await UrlModel.findOne({longUrl:longUrl}).select({createdAt:0,updatedAt:0,__v:0,_id:0});
         if(uniqueShortUrl){
             return res.status(200).send({status:true,message:"please shorturl is already exists",data:uniqueShortUrl})
         }
@@ -59,19 +64,17 @@ const shortUrlFun=async (req,res)=>{
         const shortUrl=baseUrl+"/"+urlCode.toLowerCase()
         console.log(urlCode)
 
-        if(!validUrl.isUri(longUrl)){
-            return res.status(400).send({status:false,message:"please valid long url"})
-        }
+       
         if(!urlCode){
             return res.status(400).send({status:false,message:"please provide urlcode url "})
         }
-        if(!shortUrl){
-            return res.status(400).send({status:false,message:"please provide short url "})
-        }
+        // if(!shortUrl){
+        //     return res.status(400).send({status:false,message:"please provide short url "})
+        // }
        
             let obj={longUrl,shortUrl,urlCode}
             let saveData=await UrlModel.create(obj)
-            let urlRes=await UrlModel.find(saveData).select({longUrl:1,shortUrl:1,urlCode:1})
+            let urlRes=await UrlModel.findOne(saveData).select({longUrl:1,shortUrl:1,urlCode:1,_id:0})
 
             //caching
             await SET_ASYNC(`${urlCode}`,JSON.stringify(longUrl))
@@ -90,12 +93,13 @@ const shortUrlFun=async (req,res)=>{
 const getShortUrl= async (req,res)=>{
     try{
         let urlCode=req.params.urlCode
+
         if(!urlCode){
             return res.status(400).send({status:false,message:"please provide urlcode"})
         }
-
+        let shortCode=urlCode.trim().toLowerCase()
         //start caching storage
-         let cahcedProfileData = await GET_ASYNC(urlCode)
+         let cahcedProfileData = await GET_ASYNC(shortCode)
          let parseLongUrl=JSON.parse(cahcedProfileData)
 //   if(cahcedProfileData) {
 //     res.send(cahcedProfileData)
