@@ -72,17 +72,7 @@ const shortUrlFun = async (req, res) => {
                 data: newCache
             })
         };
-        //checkurl already exist
-        const ExistUrl = await UrlModel.findOne({
-            longUrl: longUrl
-        })
-        if (ExistUrl) {
-            await SET_ASYNC(`${longUrl}`, JSON.stringify(ExistUrl))
-            return res.status(201).send({
-                status: true,
-                data: ExistUrl
-            })
-        };
+      
           
         // final create a post request;
         let urlCode = shortid.generate().toLocaleLowerCase();
