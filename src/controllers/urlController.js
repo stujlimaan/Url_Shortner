@@ -34,11 +34,12 @@ const shortUrlFun = async (req, res) => {
     try {
         const data = req.body
         const baseUrl = req.headers.host
+        const protocol=req.protocol
+        
         if (!validUrl.isUri(baseUrl)) {
             return res.status(401).send("invalid baseurl")
         };
-        console.log(baseUrl)
-
+        
         if (!validator.isRequestBody(data)) {
             return res.status(400).send({
                 status: false,
@@ -85,7 +86,7 @@ const shortUrlFun = async (req, res) => {
                 message: `Urlcode already exist`
             })
         }
-        let shortUrl = "http://" + baseUrl + "/" + urlCode;
+        let shortUrl = protocol+"://" + baseUrl + "/" + urlCode;
 
         let obj = {
             longUrl,
@@ -100,8 +101,6 @@ const shortUrlFun = async (req, res) => {
             _id: 0
         })
         await SET_ASYNC (`${longUrl}`,JSON.stringify(urlRes))
-        // await SET_ASYNC(`${urlCode}`,JSON.stringify(longUrl))
-        //     await SET_ASYNC(`${longUrl}`,JSON.stringify(longUrl))
 
         return res.status(201).send({
             status: true,
